@@ -1,0 +1,81 @@
+.historial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.historial-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  font-family: 'Outfit', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.historial-card h3 {
+  margin: 0 0 0.5rem 0;
+  color: #1e3c72;
+  font-size: 1.25rem;
+}
+
+.historial-card p {
+  margin: 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.estado-badge {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  text-align: center;
+  align-self: flex-start;
+}
+
+.estado-badge.completada {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.estado-badge.inasistencia {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.empty-historial {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  margin-top: 2rem;
+}
+
+.empty-historial p {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.volver-btn {
+  padding: 0.8rem 1.5rem;
+  background-color: #2a5298;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-family: 'Outfit', sans-serif;
+}
+
+.volver-btn:hover {
+  background-color: #1e3c72;
+}

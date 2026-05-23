@@ -1,6 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { apiClient } from '../api/axiosConfig';
+import { commandClient } from '../api/commands';
+import { queryClient } from '../api/queries';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import Swal from 'sweetalert2';
@@ -36,17 +37,17 @@ export default function Reservas() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userRes = await apiClient.get('/auth/me');
+        const userRes = await queryClient.get('/auth/me');
         setUser(userRes.data);
 
         // Traer catálogo de materias para mapear nombres
         let materiasDict = {};
         try {
-          const matRes = await apiClient.get('/api/materias/');
+          const matRes = await queryClient.get('/api/materias/');
           matRes.data.forEach(m => materiasDict[m.id] = m.nombre);
         } catch(e) { console.error('No se pudo cargar el catálogo', e); }
         
-        const resResponse = await apiClient.get('/api/reservas/estudiante/' + userRes.data.correo + '/proximas');
+        const resResponse = await queryClient.get('/api/reservas/estudiante/' + userRes.data.correo + '/proximas');
         const data = resResponse.data.content || resResponse.data.data || resResponse.data;
         
         if (data && Array.isArray(data) && data.length > 0) {
@@ -54,7 +55,7 @@ export default function Reservas() {
           const reservasDetalladas = await Promise.all(data.map(async r => {
             let tutorNombre = r.tutorId;
             try {
-              const tutorRes = await apiClient.get('/api/usuarios/' + r.tutorId + '/nombre');
+              const tutorRes = await queryClient.get('/api/usuarios/' + r.tutorId + '/nombre');
               tutorNombre = tutorRes.data.nombre;
             } catch(e) {}
 
@@ -63,7 +64,7 @@ export default function Reservas() {
             let end = new Date();
 
             try {
-              const bloqueRes = await apiClient.get('/api/bloques/' + r.bloqueDisponibilidadId + '/disponible');
+              const bloqueRes = await queryClient.get('/api/bloques/' + r.bloqueDisponibilidadId + '/disponible');
               if (bloqueRes.data) {
                 const dateInicio = parseUtcDate(bloqueRes.data.horaInicio);
                 const dateFin = parseUtcDate(bloqueRes.data.horaFin);
@@ -136,7 +137,7 @@ export default function Reservas() {
     if(!confirmacion.isConfirmed) return;
     
     try {
-      await apiClient.patch(`/api/reservas/${reservaId}/cancelar?estudianteId=${user.correo}`);
+      await commandClient.patch(`/api/reservas/${reservaId}/cancelar?estudianteId=${user.correo}`);
       
       // Animación de desaparición
       setReservas(prevReservas => prevReservas.map(r => 

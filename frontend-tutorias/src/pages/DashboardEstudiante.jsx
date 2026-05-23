@@ -1,6 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
-import { apiClient } from '../api/axiosConfig';
+import { commandClient } from '../api/commands';
+import { queryClient } from '../api/queries';
 import Swal from 'sweetalert2';
 import './Dashboard.css';
 
@@ -31,7 +32,7 @@ export default function DashboardEstudiante() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const res = await apiClient.get('/auth/me');
+        const res = await queryClient.get('/auth/me');
         setUser(res.data);
       } catch (err) { console.error(err); }
     };
@@ -39,13 +40,13 @@ export default function DashboardEstudiante() {
 
     const fetchMaterias = async () => {
       try {
-        const response = await apiClient.get('/api/materias/');
+        const response = await queryClient.get('/api/materias/');
         if (response.data && response.data.length > 0) {
           
           // Traer bloques de cada materia para permitir filtrar por tiempo
           const materiasPromises = response.data.map(async m => {
             try {
-              const resBloques = await apiClient.get('/api/bloques/materia/' + m.id);
+              const resBloques = await queryClient.get('/api/bloques/materia/' + m.id);
               m.bloquesData = resBloques.data;
             } catch(e) {
               m.bloquesData = [];
@@ -73,7 +74,7 @@ export default function DashboardEstudiante() {
     setMateriaSelected(materia);
     setModalOpen(true);
     try {
-      const res = await apiClient.get('/api/bloques/materia/' + materia.id);
+      const res = await queryClient.get('/api/bloques/materia/' + materia.id);
       
       const franjasDetalladas = await Promise.all(res.data.map(async f => {
         
@@ -95,7 +96,7 @@ export default function DashboardEstudiante() {
         
         let objTutor = { tutorNombre: f.tutor_id };
         try {
-          const r = await apiClient.get('/api/usuarios/' + f.tutor_id + '/nombre');
+          const r = await queryClient.get('/api/usuarios/' + f.tutor_id + '/nombre');
           objTutor.tutorNombre = r.data.nombre;
         } catch(e) {}
         
@@ -133,7 +134,7 @@ export default function DashboardEstudiante() {
       };
       
       // Enviar la petición al microservicio de Java (Cruce total del diagrama UML)
-      await apiClient.post('/api/reservas', payload);
+      await commandClient.post('/api/reservas', payload);
       Swal.fire({
         title: '¡Reserva exitosa!',
         text: 'Tu tutoría ha sido agendada correctamente',

@@ -1,6 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { apiClient } from '../api/axiosConfig';
+import { commandClient } from '../api/commands';
+import { queryClient } from '../api/queries';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import Swal from 'sweetalert2';
@@ -29,7 +30,7 @@ export default function PanelTutor() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userRes = await apiClient.get('/auth/me');
+        const userRes = await queryClient.get('/auth/me');
         if (userRes.data.rol !== 'TUTOR') {
           navigate('/dashboard');
           return;
@@ -38,7 +39,7 @@ export default function PanelTutor() {
 
         let materiasDict = {};
         try {
-          const matRes = await apiClient.get('/api/materias/');
+          const matRes = await queryClient.get('/api/materias/');
           matRes.data.forEach(m => materiasDict[m.id] = m.nombre);
         } catch(e) { console.error('No se pudo cargar el catálogo', e); }
 
@@ -46,20 +47,20 @@ export default function PanelTutor() {
         
         let proximas = [];
         try {
-          const proxRes = await apiClient.get('/api/reservas/tutor/' + correoTutor + '/proximas');
+          const proxRes = await queryClient.get('/api/reservas/tutor/' + correoTutor + '/proximas');
           proximas = proxRes.data.content || proxRes.data.data || proxRes.data || [];
         } catch(e) { console.warn("No hay próximas o falló", e); }
 
         let pendientes = [];
         try {
-          const pendRes = await apiClient.get('/api/reservas/tutor/' + correoTutor + '/pendientes-asistencia');
+          const pendRes = await queryClient.get('/api/reservas/tutor/' + correoTutor + '/pendientes-asistencia');
           pendientes = pendRes.data.content || pendRes.data.data || pendRes.data || [];
         } catch(e) { console.warn("No hay pendientes o no soporta endpoint."); }
 
         const combinedData = [...(Array.isArray(proximas)? proximas : []), ...(Array.isArray(pendientes)? pendientes : [])];
         
         try {
-          const tb = await apiClient.get('/api/bloques/tutor/' + correoTutor);
+          const tb = await queryClient.get('/api/bloques/tutor/' + correoTutor);
           if (tb.data && !!tb.data.length) {
              const libres = tb.data.filter(b => b.estado === 'LIBRE' || b.estado === 'DISPONIBLE').map(b => {
                  let dInicio = parseUtcDate(b.fecha_inicio || b.horaInicio);
@@ -86,7 +87,7 @@ export default function PanelTutor() {
           const reservasDetalladas = await Promise.all(uniqueData.map(async r => {
             let estudianteNombre = r.estudianteId;
             try {
-               const estRes = await apiClient.get('/api/usuarios/' + r.estudianteId + '/nombre');
+               const estRes = await queryClient.get('/api/usuarios/' + r.estudianteId + '/nombre');
                estudianteNombre = estRes.data.nombre;
             } catch(e) {}
 
@@ -95,7 +96,7 @@ export default function PanelTutor() {
             let end = new Date();
 
             try {
-              const bloqueRes = await apiClient.get('/api/bloques/' + r.bloqueDisponibilidadId + '/disponible');
+              const bloqueRes = await queryClient.get('/api/bloques/' + r.bloqueDisponibilidadId + '/disponible');
               if (bloqueRes.data) {
                 const dateInicio = parseUtcDate(bloqueRes.data.horaInicio);
                 const dateFin = parseUtcDate(bloqueRes.data.horaFin);
@@ -156,7 +157,7 @@ export default function PanelTutor() {
     if (!confirm.isConfirmed) return;
 
     try {
-      await apiClient.patch('/api/reservas/'+reservaId+'/asistencia?tutorId='+user.correo, { estado: statusText });
+      await commandClient.patch('/api/reservas/'+reservaId+'/asistencia?tutorId='+user.correo, { estado: statusText });
       
       setReservas(prev => prev.map(r => r.id === reservaId ? { ...r, isRemoving: true } : r));
       

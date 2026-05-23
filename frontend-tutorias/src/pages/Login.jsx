@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { apiClient } from '../api/axiosConfig';
+import { commandClient } from '../api/commands';
+import { queryClient } from '../api/queries';
 import Swal from 'sweetalert2';
 import './Login.css';
 
@@ -12,7 +13,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await apiClient.post('/auth/login', { correo, password });
+      const response = await commandClient.post('/auth/login', { correo, password });
       localStorage.setItem('token', response.data.access_token);
       
       if (response.data.user.rol === 'TUTOR') {
@@ -86,7 +87,7 @@ export default function Login() {
             
             <div className="login-divider"></div>
             
-            <button type="button" className="login-register-btn" onClick={() => Swal.fire('Proximamente', 'La creación de cuenta estará disponible pronto.', 'info')}>
+            <button type="button" className="login-register-btn" onClick={() => navigate('/register')}>
               Crear cuenta nueva
             </button>
           </form>
