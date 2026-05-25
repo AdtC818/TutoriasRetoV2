@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'usuarios-service'
+    static_configs:
+      - targets: ['usuarios-service:8000']
+
+  - job_name: 'catalogo-service'
+    static_configs:
+      - targets: ['catalogo-service:3000']
+
+  - job_name: 'reservas-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['reservas-service:8082']

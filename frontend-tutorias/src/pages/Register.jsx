@@ -46,21 +46,21 @@ export default function Register() {
   };
 
   return (
-    <div className="login-container">
+    <div className="register-container">
       <div className="bg-shape shape1"></div>
       <div className="bg-shape shape2"></div>
 
-      <div className="login-content">
-        <div className="login-left">
-          <h1 className="login-logo">Tutorías</h1>
-          <h2 className="login-subtitle">
+      <div className="register-content">
+        <div className="register-left">
+          <h1 className="register-logo">Tutorías</h1>
+          <h2 className="register-subtitle">
             Únete a nuestra plataforma y empieza a <span className="highlight-text">crecer.</span>
           </h2>
           <div className="image-wrapper">
             <img 
               src="/pixar-graduados.jfif" 
               alt="Graduados universitarios" 
-              className="login-image" 
+              className="register-image" 
               onError={(e) => {
                 e.target.src = 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
               }}
@@ -68,14 +68,14 @@ export default function Register() {
           </div>
         </div>
 
-        <div className="login-right">
-          <form className="login-card" onSubmit={handleRegister}>
+        <div className="register-right">
+          <form className="register-card" onSubmit={handleRegister}>
             <input 
               type="text" 
               placeholder="Nombre completo" 
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
-              className="login-input"
+              className="register-input"
               required
             />
             <input 
@@ -83,7 +83,7 @@ export default function Register() {
               placeholder="Correo electrónico" 
               value={correo}
               onChange={(e) => setCorreo(e.target.value)}
-              className="login-input"
+              className="register-input"
               required
             />
             <input 
@@ -91,7 +91,7 @@ export default function Register() {
               placeholder="Contraseña" 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="login-input"
+              className="register-input"
               required
             />
             <input 
@@ -99,23 +99,23 @@ export default function Register() {
               placeholder="Confirmar contraseña" 
               value={confirmarPassword}
               onChange={(e) => setConfirmarPassword(e.target.value)}
-              className="login-input"
+              className="register-input"
               required
             />
             <select 
               value={rol}
               onChange={(e) => setRol(e.target.value)}
-              className="login-input"
+              className="register-input"
               required
             >
               <option value="ESTUDIANTE">Estudiante</option>
               <option value="TUTOR">Tutor</option>
             </select>
-            <button type="submit" className="login-btn">
+            <button type="submit" className="register-btn">
               Crear cuenta
             </button>
-            <div className="login-divider"></div>
-            <button type="button" className="login-register-btn" onClick={() => navigate('/login')}>
+            <div className="register-divider"></div>
+            <button type="button" className="register-register-btn" onClick={() => navigate('/login')}>
               Volver a iniciar sesión
             </button>
           </form>

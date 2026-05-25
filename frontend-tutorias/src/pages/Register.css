@@ -1,156 +1,249 @@
-/* Usamos exactamente las mismas reglas que Login.css para mantener la consistencia visual */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
 
-.login-container {
-  min-height: 100vh;
+.register-container {
   display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  /* Fondo moderno con degradado sutil */
+  background: linear-gradient(135deg, #f3f8ff 0%, #e1ebff 100%);
   align-items: center;
   justify-content: center;
-  background-color: #f0f4f8;
   font-family: 'Outfit', sans-serif;
+  overflow: hidden;
   position: relative;
-  overflow: hidden;
-  padding: 2rem;
 }
 
-.login-content {
+/* Efectos de blob de fondo para darle estética */
+.register-container::before {
+  content: "";
+  position: absolute;
+  top: -150px;
+  left: -100px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(24, 119, 242, 0.2) 0%, rgba(24, 119, 242, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: float 10s infinite ease-in-out alternate;
+}
+
+.register-container::after {
+  content: "";
+  position: absolute;
+  bottom: -150px;
+  right: -100px;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(0, 198, 255, 0.15) 0%, rgba(66, 183, 42, 0) 65%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: float 14s infinite ease-in-out alternate-reverse;
+}
+
+/* Círculo adicional para más estética */
+.bg-shape {
+  position: absolute;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(24, 119, 242, 0.1), rgba(170, 59, 255, 0.1));
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+.shape1 { top: 20%; right: 20%; width: 300px; height: 300px; animation: float 12s infinite ease-in-out; }
+.shape2 { bottom: 10%; left: 30%; width: 400px; height: 400px; animation: float 16s infinite ease-in-out reverse; }
+
+@keyframes float {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+.register-content {
   display: flex;
-  flex-direction: row;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  max-width: 900px;
   width: 100%;
-  z-index: 10;
+  max-width: 1200px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  z-index: 10; /* Para estar encima de los blobs */
 }
 
-.login-left {
+@media (max-width: 900px) {
+  .register-content {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.register-left {
   flex: 1;
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-  color: white;
-  padding: 3rem;
+  padding-right: 80px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
-.login-logo {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
+.register-logo {
+  font-size: 4rem;
+  margin: 0 0 10px 0;
+  font-weight: 800;
+  /* Degradado moderno para el título */
+  background: linear-gradient(90deg, #1877f2 0%, #00c6ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  text-shadow: 0px 4px 15px rgba(24, 119, 242, 0.2);
+  line-height: 1.2;
+  padding-bottom: 10px; /* Evita que las letras como la p o g se corten inferiormente */
 }
 
-.login-subtitle {
-  font-size: 1.5rem;
-  font-weight: 300;
+.register-subtitle {
+  font-size: 1.8rem;
+  font-weight: 400;
   line-height: 1.4;
-  margin-bottom: 2rem;
+  color: #333;
+  margin: 0 0 40px 0;
 }
 
+/* Para resaltar texto en el subtítulo */
 .highlight-text {
   font-weight: 600;
-  color: #ffca28;
+  color: #1877f2;
 }
 
 .image-wrapper {
-  margin-top: 2rem;
+  perspective: 1000px; /* Para efecto 3D sutil */
+}
+
+.register-image {
+  max-width: 100%;
+  border-radius: 16px;
+  /* Sombras y borde premium */
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.05);
+  border: 4px solid rgba(255, 255, 255, 0.8);
+  object-fit: cover;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.register-image:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.15), 0 10px 20px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 900px) {
+  .register-left {
+    padding-right: 0;
+    margin-bottom: 40px;
+    align-items: center;
+  }
+}
+
+.register-right {
+  width: 420px;
+}
+
+.register-card {
+  /* Glassmorphism sutil */
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
   border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.login-image {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.login-right {
-  flex: 1;
-  padding: 3rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .08), 0 2px 8px rgba(0, 0, 0, .04);
+  padding: 25px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  background: #ffffff;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
-.login-card {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-}
-
-.login-input {
-  width: 100%;
-  padding: 1rem;
-  border: 1px solid #e0e0e0;
+.register-input {
+  border: 1px solid #dddfe2;
   border-radius: 8px;
-  font-size: 1rem;
-  font-family: 'Outfit', sans-serif;
-  transition: all 0.3s ease;
-  background: #fdfdfd;
-}
-
-.login-input:focus {
+  font-size: 17px;
+  padding: 15px 18px;
+  margin-bottom: 16px;
   outline: none;
-  border-color: #2a5298;
-  box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
-  background: #ffffff;
+  background-color: #fcfcfc;
+  transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
+  font-family: 'Outfit', sans-serif;
 }
 
-.login-btn {
-  width: 100%;
-  padding: 1rem;
-  background: #2a5298;
-  color: white;
+.register-input:focus {
+  border-color: #1877f2;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.15);
+}
+
+.register-btn {
+  background: linear-gradient(90deg, #1877f2 0%, #166fe5 100%);
   border: none;
   border-radius: 8px;
-  font-size: 1rem;
+  color: #fff;
+  font-size: 20px;
   font-weight: 600;
+  padding: 12px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 10px;
   font-family: 'Outfit', sans-serif;
 }
 
-.login-btn:hover {
-  background: #1e3c72;
+.register-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(24, 119, 242, 0.3);
 }
 
-.login-register-btn {
-  width: 100%;
-  padding: 1rem;
-  background: transparent;
-  color: #2a5298;
-  border: 1px solid #2a5298;
+.register-btn:active {
+  transform: translateY(0);
+}
+
+.register-forgot {
+  color: #0866ff;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  margin-top: 18px;
+  transition: color 0.2s;
+}
+
+.register-forgot:hover {
+  text-decoration: underline;
+  color: #004dcc;
+}
+
+.register-divider {
+  align-items: center;
+  border-bottom: 1px solid #dadde1;
+  display: flex;
+  margin: 24px 16px;
+  text-align: center;
+}
+
+.register-register-btn {
+  background: linear-gradient(90deg, #42b72a 0%, #36a420 100%);
+  border: none;
   border-radius: 8px;
-  font-size: 1rem;
+  color: #fff;
+  font-size: 18px;
   font-weight: 600;
+  padding: 14px 20px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  align-self: center;
+  transition: transform 0.2s, box-shadow 0.2s;
   font-family: 'Outfit', sans-serif;
 }
 
-.login-register-btn:hover {
-  background: rgba(42, 82, 152, 0.05);
+.register-register-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(66, 183, 42, 0.3);
 }
-
-.login-divider {
-  height: 1px;
-  background: #eeeeee;
-  margin: 1rem 0;
-}
-
-select.login-input {
+select.register-input {
   appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 1rem center;
   background-size: 1em;
-}
-
-@media (max-width: 768px) {
-  .login-content {
-    flex-direction: column;
-  }
 }
