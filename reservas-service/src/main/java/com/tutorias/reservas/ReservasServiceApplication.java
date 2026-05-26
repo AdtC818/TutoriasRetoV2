@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients
+@EnableFeignClients(basePackages = "com.tutorias.reservas.infrastructure.feign")
 public class ReservasServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(ReservasServiceApplication.class, args);

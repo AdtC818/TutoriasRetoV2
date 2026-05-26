@@ -1,9 +1,10 @@
 package com.tutorias.reservas.exception;
 
-import com.tutorias.reservas.dto.ReservaDTO;
+import com.tutorias.reservas.interfaces.rest.ReservaDTO;
 import org.springframework.http.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -23,8 +24,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ReservaDTO.ApiResponse<Void>> handleIllegalArgument(IllegalArgumentException ex) {
-        System.out.println("ERROR 400 - IllegalArgumentException: " + ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ReservaDTO.ApiResponse.error(ex.getMessage()));
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ReservaDTO.ApiResponse<Void>> handleIllegalState(IllegalStateException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(ReservaDTO.ApiResponse.error(ex.getMessage()));
     }
 
