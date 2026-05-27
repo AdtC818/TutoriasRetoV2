@@ -25,18 +25,20 @@
   bloquear = async (req, res) => {
     try {
       await this.service.cambiarEstado(req.params.bloqueId, 'RESERVADO');
-      res.json({ message: 'Bloque bloqueado' });
+      res.json({ message: 'Bloque bloqueado', estado: 'RESERVADO' });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      const status = err.message === 'Bloque no encontrado' ? 404 : 500;
+      res.status(status).json({ error: err.message });
     }
   };
 
   liberar = async (req, res) => {
     try {
       await this.service.cambiarEstado(req.params.bloqueId, 'LIBRE');
-      res.json({ message: 'Bloque liberado' });
+      res.json({ message: 'Bloque liberado', estado: 'LIBRE' });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      const status = err.message === 'Bloque no encontrado' ? 404 : 500;
+      res.status(status).json({ error: err.message });
     }
   };
 
@@ -48,16 +50,6 @@
       res.status(500).json({ error: err.message });
     }
   };
-
-  getByTutor = async (req, res) => {
-    try {
-      const { tutorId } = req.params;
-      const bloques = await this.service.getDisponibilidadTutor(tutorId);
-      res.json(bloques);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  }
 
   getByTutor = async (req, res) => {
     try {

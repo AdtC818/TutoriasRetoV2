@@ -1,62 +1,37 @@
-﻿const dayjs = require('dayjs');
+const CrearBloqueCommand = require('./commands/CrearBloqueCommand');
+const CambiarEstadoCommand = require('./commands/CambiarEstadoCommand');
+const GetBloqueQuery = require('./queries/GetBloqueQuery');
+const GetDisponibilidadQuery = require('./queries/GetDisponibilidadQuery');
 
 class DisponibilidadService {
-  constructor(repository) {
-    this.repository = repository;
+  constructor({ crearBloqueHandler, cambiarEstadoHandler, getBloqueHandler, getDisponibilidadHandler }) {
+    this.crearBloqueHandler = crearBloqueHandler;
+    this.cambiarEstadoHandler = cambiarEstadoHandler;
+    this.getBloqueHandler = getBloqueHandler;
+    this.getDisponibilidadHandler = getDisponibilidadHandler;
   }
 
   async crearBloque(data) {
-    const { tutor_id, fecha_inicio, fecha_fin } = data;
-
-    const Bloque = require('../domain/bloque.entity');
-
-    // Validar con la entidad (lanza error si las fechas son invÃ¡lidas)
-    new Bloque({ tutor_id, fecha_inicio, fecha_fin });
-
-    const inicio = dayjs(fecha_inicio);
-    const fin = dayjs(fecha_fin);
-
-    if (fin.isBefore(inicio)) throw new Error('Fechas invÃ¡lidas');
-
-    const conflicto = await this.repository.existeSolapamiento(
-      tutor_id, fecha_inicio, fecha_fin
-    );
-    if (conflicto) throw new Error('Conflicto de horario');
-
-    const bloqueId = await this.repository.crearBloque(data);
-
-    let actual = inicio;
-    while (actual.isBefore(fin)) {
-      const siguiente = actual.add(30, 'minute');
-      await this.repository.crearFranja(
-        bloqueId,
-        actual.format('YYYY-MM-DD HH:mm:ss'),
-        siguiente.format('YYYY-MM-DD HH:mm:ss')
-      );
-      actual = siguiente;
-    }
-
-    return bloqueId;
+    return this.crearBloqueHandler.execute(new CrearBloqueCommand(data));
   }
+
   async obtenerBloque(bloqueId) {
-    return this.repository.findById(bloqueId);
+    return this.getBloqueHandler.execute(new GetBloqueQuery(bloqueId));
   }
 
   async cambiarEstado(bloqueId, nuevoEstado) {
-    return this.repository.actualizarEstado(bloqueId, nuevoEstado);
+    return this.cambiarEstadoHandler.execute(
+      new CambiarEstadoCommand({ bloqueId, estado: nuevoEstado })
+    );
   }
 
   async getFranjasPorMateria(materiaId) {
-    return this.repository.getDisponibilidadByMateria(materiaId);
+    return this.getDisponibilidadHandler.execute(new GetDisponibilidadQuery({ materiaId }));
   }
 
   async getDisponibilidadTutor(tutorId) {
-    return this.repository.getDisponibilidadByTutor(tutorId);
-  }
-
-  async getDisponibilidadTutor(tutorId) {
-    return this.repository.getDisponibilidadByTutor(tutorId);
+    return this.getDisponibilidadHandler.execute(new GetDisponibilidadQuery({ tutorId }));
   }
 }
-module.exports = DisponibilidadService;
 
+module.exports = DisponibilidadService;

@@ -85,12 +85,15 @@ services:
       - "3000:3000"
     depends_on:
       - mysql
+      - rabbitmq-tutorias
     environment:
       DB_HOST: mysql
       DB_USER: root
       DB_PASSWORD: root
       DB_NAME: tutorias_db
       PORT: 3000
+      RABBITMQ_URL: amqp://admin:admin@rabbitmq-tutorias:5672
+      RABBITMQ_EXCHANGE: tutorias.events
     networks:
       - tutorias-network
 

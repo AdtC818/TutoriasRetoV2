@@ -13,8 +13,8 @@ class DisponibilidadRepository {
 
   async crearBloque(data) {
     const [res] = await db.query(
-      'INSERT INTO bloque_disponibilidad (tutor_id, fecha_inicio, fecha_fin, estado) VALUES (?, ?, ?, "LIBRE")',
-      [data.tutor_id, data.fecha_inicio, data.fecha_fin]
+      'INSERT INTO bloque_disponibilidad (tutor_id, materia_id, fecha_inicio, fecha_fin, estado) VALUES (?, ?, ?, ?, ?)',
+      [data.tutor_id, data.materia_id, data.fecha_inicio, data.fecha_fin, data.estado || 'LIBRE']
     );
 
     return res.insertId;
@@ -36,6 +36,7 @@ class DisponibilidadRepository {
     return {
       id: b.id,
       tutorId: b.tutor_id,
+      materiaId: b.materia_id,
       diaSemana: b.fecha_inicio,
       horaInicio: b.fecha_inicio,
       horaFin: b.fecha_fin,
@@ -52,7 +53,7 @@ class DisponibilidadRepository {
 
   async getDisponibilidadByMateria(materiaId) {
     const [rows] = await db.query(
-      'SELECT bd.id, bd.tutor_id, bd.fecha_inicio, bd.fecha_fin, m.nombre as materia_nombre ' +
+      'SELECT bd.id, bd.tutor_id, bd.materia_id, bd.fecha_inicio, bd.fecha_fin, m.nombre as materia_nombre ' +
       'FROM bloque_disponibilidad bd ' +
       'JOIN materia m ON m.id = bd.materia_id ' +
       'WHERE bd.estado = "LIBRE" AND m.id = ?',
@@ -64,7 +65,7 @@ class DisponibilidadRepository {
 
   async getDisponibilidadByTutor(tutorId) {
     const [rows] = await db.query(
-      'SELECT bd.id as bloque_id, bd.tutor_id, bd.fecha_inicio, bd.fecha_fin, bd.estado, m.nombre as materia_nombre ' +
+      'SELECT bd.id as bloque_id, bd.tutor_id, bd.materia_id, bd.fecha_inicio, bd.fecha_fin, bd.estado, m.nombre as materia_nombre ' +
       'FROM bloque_disponibilidad bd ' +
       'JOIN materia m ON m.id = bd.materia_id ' +
       'WHERE bd.tutor_id = ?',

@@ -203,6 +203,13 @@ export default function PanelTutor() {
           >
             Modo: {viewMode === 'list' ? 'Calendario 📅' : 'Tarjetas 📝'}
           </button>
+          <button
+            className='btn-primary'
+            style={{width: 'auto', margin: 0, padding: '10px 20px'}}
+            onClick={() => navigate('/tutor/disponibilidad')}
+          >
+            Crear disponibilidad
+          </button>
         </div>
 
         {reservasActivas.length === 0 && viewMode === 'list' ? (

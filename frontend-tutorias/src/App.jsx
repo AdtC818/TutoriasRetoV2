@@ -6,6 +6,7 @@ import DashboardEstudiante from './pages/DashboardEstudiante';
 import ReservasEstudiante from './pages/ReservasEstudiante';
 import Historial from './pages/Historial';
 import PanelTutor from './pages/PanelTutor';
+import CrearDisponibilidad from './pages/CrearDisponibilidad';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/reservas" element={<PrivateRoute><ReservasEstudiante /></PrivateRoute>} />
         <Route path="/historial" element={<PrivateRoute><Historial /></PrivateRoute>} />
         <Route path="/tutor" element={<PrivateRoute><PanelTutor /></PrivateRoute>} />
+        <Route path="/tutor/disponibilidad" element={<PrivateRoute><CrearDisponibilidad /></PrivateRoute>} />
       </Routes>
     </Router>
   );
