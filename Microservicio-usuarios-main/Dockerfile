@@ -11,6 +11,12 @@ RUN touch app/__init__.py
 RUN touch app/routes/__init__.py
 RUN touch app/models/__init__.py
 RUN touch app/auth/__init__.py
+RUN touch app/domain/__init__.py
+RUN touch app/application/__init__.py
+RUN touch app/application/commands/__init__.py
+RUN touch app/application/queries/__init__.py
+RUN touch app/infrastructure/__init__.py
+RUN touch app/infrastructure/adapters/__init__.py
 
 EXPOSE 8000
 
