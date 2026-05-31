@@ -7,6 +7,8 @@ import ReservasEstudiante from './pages/ReservasEstudiante';
 import Historial from './pages/Historial';
 import PanelTutor from './pages/PanelTutor';
 import CrearDisponibilidad from './pages/CrearDisponibilidad';
+import PerfilTutor from './pages/PerfilTutor';
+import OAuthCallback from './pages/OAuthCallback';
 
 function App() {
   return (
@@ -15,11 +17,13 @@ function App() {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/oauth-callback" element={<OAuthCallback />} />
         <Route path="/dashboard" element={<PrivateRoute><DashboardEstudiante /></PrivateRoute>} />
         <Route path="/reservas" element={<PrivateRoute><ReservasEstudiante /></PrivateRoute>} />
         <Route path="/historial" element={<PrivateRoute><Historial /></PrivateRoute>} />
         <Route path="/tutor" element={<PrivateRoute><PanelTutor /></PrivateRoute>} />
         <Route path="/tutor/disponibilidad" element={<PrivateRoute><CrearDisponibilidad /></PrivateRoute>} />
+        <Route path="/tutor/perfil" element={<PrivateRoute><PerfilTutor /></PrivateRoute>} />
       </Routes>
     </Router>
   );
