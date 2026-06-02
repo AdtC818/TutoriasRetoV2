@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { commandClient } from '../api/commands';
 import { queryClient } from '../api/queries';
 import Swal from 'sweetalert2';
 import moment from 'moment';
 import './Historial.css';
-import './Dashboard.css'; // Para reusar el navbar
+import './Dashboard.css';
 
 export default function Historial() {
   const [historial, setHistorial] = useState([]);
@@ -18,13 +17,13 @@ export default function Historial() {
 
   const cargarHistorial = async () => {
     try {
-      // 1. Obtener usuario
       const meResponse = await queryClient.get('/auth/me');
-      const userId = meResponse.data.id;
+      const userId = meResponse.data.correo; // el backend usa correo como estudianteId
 
-      // 2. Obtener historial
       const histResponse = await queryClient.get(`/api/reservas/estudiante/${userId}/historial`);
-      setHistorial(histResponse.data);
+      // La respuesta es { success, mensaje, data: [...] }
+      const lista = histResponse.data.data || histResponse.data || [];
+      setHistorial(Array.isArray(lista) ? lista : []);
     } catch (error) {
       console.error(error);
       Swal.fire('Error', 'No se pudo cargar el historial', 'error');
@@ -38,9 +37,18 @@ export default function Historial() {
     navigate('/login');
   };
 
+  const estadoLabel = (estado) => {
+    const map = {
+      COMPLETADA: '✅ Completada',
+      INASISTENCIA: '❌ Inasistencia',
+      CANCELADA: '🚫 Cancelada',
+      ACTIVA: '🟢 Activa',
+    };
+    return map[estado] || estado;
+  };
+
   return (
     <div className="dashboard-container">
-      {/* Mismo Navbar que Dashboard */}
       <nav className="dashboard-nav">
         <div className="nav-logo">Tutorías</div>
         <div className="nav-links">
@@ -69,13 +77,12 @@ export default function Historial() {
           <div className="historial-grid">
             {historial.map((res) => (
               <div key={res.id} className="historial-card">
-                <h3>{res.materiaNombre || 'Tutoría'}</h3>
-                <p><strong>Tutor:</strong> {res.tutorNombre}</p>
-                <p><strong>Fecha:</strong> {moment(res.fecha).format('DD/MM/YYYY')}</p>
-                <p><strong>Hora:</strong> {res.horaInicio} - {res.horaFin}</p>
-                
-                <span className={`estado-badge ${res.estado.toLowerCase()}`}>
-                  {res.estado}
+                <h3>Tutoría #{res.id}</h3>
+                <p><strong>Materia ID:</strong> {res.materiaId}</p>
+                <p><strong>Tutor:</strong> {res.tutorId}</p>
+                <p><strong>Fecha:</strong> {moment(res.fechaSesion).format('DD/MM/YYYY')}</p>
+                <span className={`estado-badge ${res.estado?.toLowerCase()}`}>
+                  {estadoLabel(res.estado)}
                 </span>
               </div>
             ))}

@@ -25,7 +25,7 @@ export default function Register() {
     }
 
     try {
-      await commandClient.post('/auth/register', { nombre, correo, password, rol });
+      await commandClient.post('/auth/register', { nombre, correo, password_hash: password, rol });
       
       Swal.fire({
         title: 'Registro exitoso',
