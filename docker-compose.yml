@@ -65,6 +65,8 @@ services:
     ports:
       - "8000:8000"
     restart: on-failure
+    env_file:
+      - .env                    # ← agregar esto
     depends_on:
       - mongodb
       - eureka-server
@@ -74,6 +76,10 @@ services:
       SECRET_KEY: tu_clave_super_secreta_12345
       ALGORITHM: HS256
       ACCESS_TOKEN_EXPIRE_MINUTES: 60
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
+      FRONTEND_URL: ${FRONTEND_URL}
     networks:
       - tutorias-network
 
@@ -139,6 +145,7 @@ services:
       - usuarios-service
       - catalogo-service
       - reservas-service
+    restart: always
     networks:
       - tutorias-network
 

@@ -98,8 +98,8 @@ export default function PanelTutor() {
             try {
               const bloqueRes = await queryClient.get('/api/bloques/' + r.bloqueDisponibilidadId + '/disponible');
               if (bloqueRes.data) {
-                const dateInicio = parseUtcDate(bloqueRes.data.horaInicio);
-                const dateFin = parseUtcDate(bloqueRes.data.horaFin);
+                const dateInicio = parseUtcDate(bloqueRes.data.horaInicio || bloqueRes.data.fecha_inicio);
+                const dateFin = parseUtcDate(bloqueRes.data.horaFin || bloqueRes.data.fecha_fin);
                 
                 if (r.fechaSesion) {
                   const parts = r.fechaSesion.split('-');

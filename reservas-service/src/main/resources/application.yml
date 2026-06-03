@@ -53,3 +53,15 @@ logging:
   level:
     com.tutorias: DEBUG
     org.springframework.amqp: INFO
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus,info
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application: reservas-service

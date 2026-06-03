@@ -1,32 +1,35 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { commandClient } from '../api/commands';
-import { queryClient } from '../api/queries';
-import Swal from 'sweetalert2';
-import './Login.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { commandClient } from "../api/commands";
+import { queryClient } from "../api/queries";
+import Swal from "sweetalert2";
+import "./Login.css";
 
 export default function Login() {
-  const [correo, setCorreo] = useState('');
-  const [password, setPassword] = useState('');
+  const [correo, setCorreo] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await commandClient.post('/auth/login', { correo, password });
-      localStorage.setItem('token', response.data.access_token);
-      
-      if (response.data.user.rol === 'TUTOR') {
-        navigate('/tutor');
+      const response = await commandClient.post("/auth/login", {
+        correo,
+        password,
+      });
+      localStorage.setItem("token", response.data.access_token);
+
+      if (response.data.user.rol === "TUTOR") {
+        navigate("/tutor");
       } else {
-        navigate('/dashboard');
+        navigate("/dashboard");
       }
     } catch (error) {
       console.error(error);
       Swal.fire({
-        title: 'Error de acceso',
-        text: 'Revisa tus credenciales e intenta de nuevo.',
-        icon: 'error',
+        title: "Error de acceso",
+        text: "Revisa tus credenciales e intenta de nuevo.",
+        icon: "error",
       });
     }
   };
@@ -38,22 +41,23 @@ export default function Login() {
       <div className="bg-shape shape2"></div>
 
       <div className="login-content">
-        
         {/* Lado izquierdo al estilo moderno */}
         <div className="login-left">
           <h1 className="login-logo">Tutorías</h1>
           <h2 className="login-subtitle">
-            Explora las tutorías universitarias y agenda <span className="highlight-text">lo que más te gusta.</span>
+            Explora las tutorías universitarias y agenda{" "}
+            <span className="highlight-text">lo que más te gusta.</span>
           </h2>
           {/* Cargamos la imagen de graduados que subiste */}
           <div className="image-wrapper">
-            <img 
-              src="/pixar-graduados.jfif" 
-              alt="Graduados universitarios" 
-              className="login-image" 
+            <img
+              src="/pixar-graduados.jfif"
+              alt="Graduados universitarios"
+              className="login-image"
               onError={(e) => {
                 // Imagen de respaldo
-                e.target.src = 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                e.target.src =
+                  "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
               }}
             />
           </div>
@@ -62,17 +66,17 @@ export default function Login() {
         {/* Formulario derecho (Tarjeta Blanca / Glassmorphism) */}
         <div className="login-right">
           <form className="login-card" onSubmit={handleLogin}>
-            <input 
-              type="email" 
-              placeholder="Correo electrónico o número de celular" 
+            <input
+              type="email"
+              placeholder="Correo electrónico o número de celular"
               value={correo}
               onChange={(e) => setCorreo(e.target.value)}
               className="login-input"
               required
             />
-            <input 
-              type="password" 
-              placeholder="Contraseña" 
+            <input
+              type="password"
+              placeholder="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="login-input"
@@ -84,15 +88,47 @@ export default function Login() {
             <a href="#" className="login-forgot">
               ¿Olvidaste tu contraseña?
             </a>
-            
+
             <div className="login-divider"></div>
-            
-            <button type="button" className="login-register-btn" onClick={() => navigate('/register')}>
+
+            <button
+              type="button"
+              className="login-register-btn"
+              onClick={() => navigate("/register")}
+            >
               Crear cuenta nueva
+            </button>
+
+            {/* ← Agregar esto */}
+            <div className="login-divider"></div>
+
+            <button
+              type="button"
+              className="login-btn"
+              style={{
+                backgroundColor: "#fff",
+                color: "#444",
+                border: "1px solid #ddd",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "10px",
+              }}
+              onClick={() =>
+                (window.location.href =
+                  "http://localhost:8090/auth/google/login")
+              }
+            >
+              <img
+                src="https://www.google.com/favicon.ico"
+                width="18"
+                height="18"
+                alt="Google"
+              />
+              Continuar con Google
             </button>
           </form>
         </div>
-
       </div>
     </div>
   );

@@ -201,6 +201,7 @@ export default function DashboardEstudiante() {
             </div>
           )}
           <Link to='/reservas' className='nav-link'>Mis Reservas</Link>
+          <Link to='/historial' className='nav-link'>Mi Historial</Link>
           <button onClick={handleLogout} className='btn-logout'>Cerrar Sesión</button>
         </div>
       </nav>

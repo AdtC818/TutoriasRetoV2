@@ -66,8 +66,8 @@ export default function Reservas() {
             try {
               const bloqueRes = await queryClient.get('/api/bloques/' + r.bloqueDisponibilidadId + '/disponible');
               if (bloqueRes.data) {
-                const dateInicio = parseUtcDate(bloqueRes.data.horaInicio);
-                const dateFin = parseUtcDate(bloqueRes.data.horaFin);
+                const dateInicio = parseUtcDate(bloqueRes.data.horaInicio || bloqueRes.data.fecha_inicio);
+                const dateFin = parseUtcDate(bloqueRes.data.horaFin || bloqueRes.data.fecha_fin);
                 
                 // Extraer hora y minutos de dateInicio y dateFin original
                 const startHour = dateInicio.getHours();
