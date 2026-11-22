@@ -29,4 +29,4 @@ Luego abre http://localhost:5173. El inicio de sesión con Google necesita crede
 - Coordinación del equipo y de las entregas semanales.
 
 ## Equipo
-JASH Solutions: Nicolas Parra, Laura Malagon, Elias Camargo
+JASH Solutions: Angel Torres, Nicolas Parra, Laura Malagon, Elias Camargo
